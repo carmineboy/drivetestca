@@ -5,11 +5,11 @@ import { SITE_URL, KEYWORDS_EN, BUSINESS_NAME_EN } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Niagara Drive Coach · St. Catharines bilingual driving instructor",
-    template: "%s · Niagara Drive Coach",
+    default: "Niagara Driving Instructor · St. Catharines bilingual driving instructor",
+    template: "%s · Niagara Driving Instructor",
   },
   description:
-    "Bilingual driving instructor in St. Catharines and the Niagara region. 12 years local · 97% first-time G2 / G pass rate · winter driving, road-test route prep, and G1 written help.",
+    "Bilingual driving instructor in St. Catharines and the Niagara region. Teaching since 2020 · 97% first-time G2 / G pass rate · winter driving, road-test route prep, and G1 written help.",
   keywords: KEYWORDS_EN,
   applicationName: BUSINESS_NAME_EN,
   authors: [{ name: BUSINESS_NAME_EN }],
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Niagara Drive Coach — St. Catharines bilingual driving instructor",
+    title: "Niagara Driving Instructor — St. Catharines bilingual driving instructor",
     description:
-      "12 years local · 97% first-time pass · G2 / G road-test prep across St. Catharines, Niagara Falls, Welland, Thorold.",
+      "Teaching since 2020 · 97% first-time pass · G2 / G road-test prep across St. Catharines, Niagara Falls, Welland, Thorold.",
     url: `${SITE_URL}/en`,
     siteName: BUSINESS_NAME_EN,
     type: "website",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "St. Catharines & Niagara driving instructor",
     description:
-      "Bilingual G2 / G road-test coach · 97% first-time pass · 12 years across the Niagara region.",
+      "Bilingual G2 / G road-test instructor · 97% first-time pass · Teaching since 2020 across the Niagara region.",
   },
   formatDetection: {
     telephone: true,

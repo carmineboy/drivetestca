@@ -1,9 +1,99 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Question } from "@/lib/g1-questions";
 
 type Mode = "sequential" | "shuffle";
+type Locale = "zh" | "en";
+type QuizLabels = {
+  badge: (zhCount: number, enCount?: number) => string;
+  headingPrefix: string;
+  headingMarked: string;
+  headingSuffix: string;
+  intro: string;
+  source: string;
+  zhBank: string;
+  enBank: string;
+  complete: string;
+  accuracy: string;
+  correct: string;
+  wrong: string;
+  retry: string;
+  switchMode: (mode: Mode) => string;
+  wrongReview: (count: number) => string;
+  yourAnswer: string;
+  correctAnswer: string;
+  progress: (answered: number, total: number) => string;
+  sequential: string;
+  shuffle: string;
+  questionNumber: (number: number) => string;
+  questionImageAlt: (number: number) => string;
+  submit: string;
+  answeredCorrect: string;
+  answeredWrong: string;
+  next: string;
+  results: string;
+};
+
+const DEFAULT_LABELS: QuizLabels = {
+  badge: (zhCount, enCount) => `中文 ${zhCount} 题 · English ${enCount ?? 0} questions`,
+  headingPrefix: "G1 中文笔试",
+  headingMarked: "模拟练习",
+  headingSuffix: "。",
+  intro: "作答即时告知对错并累计成绩。题目仅缓存在你当前浏览器标签中——关闭或刷新后记录自动清除，无需注册、无需登录。",
+  source: "题库来源：CC Driving 公开 G1 模拟题页面抓取整理，仅供练习参考。",
+  zhBank: "中文题库",
+  enBank: "English",
+  complete: "练习结束 — Quiz complete",
+  accuracy: "正确率",
+  correct: "答对",
+  wrong: "答错",
+  retry: "再来一次",
+  switchMode: (mode) => `切换为${mode === "shuffle" ? "顺序" : "随机"}模式`,
+  wrongReview: (count) => `错题回顾（${count}）`,
+  yourAnswer: "你的答案：",
+  correctAnswer: "正确答案：",
+  progress: (answered, total) => `进度 ${answered}/${total}`,
+  sequential: "顺序",
+  shuffle: "随机",
+  questionNumber: (number) => `题库编号 #${number}`,
+  questionImageAlt: (number) => `G1 题目 ${number} 配图`,
+  submit: "提交答案",
+  answeredCorrect: "✓ 答对",
+  answeredWrong: "✗ 答错",
+  next: "下一题",
+  results: "查看成绩",
+};
+
+const EN_LABELS: QuizLabels = {
+  badge: (zhCount, enCount) => `Chinese ${zhCount} questions · English ${enCount ?? 0} questions`,
+  headingPrefix: "Ontario G1 ",
+  headingMarked: "practice test",
+  headingSuffix: ".",
+  intro: "Get instant feedback as you answer. Your score only lives in this browser tab: refresh or close the page and the session clears automatically. No registration, no login.",
+  source: "Question bank imported from CC Driving's public G1 practice page. For study reference only.",
+  zhBank: "Chinese",
+  enBank: "English",
+  complete: "Quiz complete",
+  accuracy: "Accuracy",
+  correct: "Correct",
+  wrong: "Wrong",
+  retry: "Try again",
+  switchMode: (mode) => `Switch to ${mode === "shuffle" ? "sequential" : "shuffle"} mode`,
+  wrongReview: (count) => `Review wrong answers (${count})`,
+  yourAnswer: "Your answer: ",
+  correctAnswer: "Correct answer: ",
+  progress: (answered, total) => `Progress ${answered}/${total}`,
+  sequential: "Sequential",
+  shuffle: "Shuffle",
+  questionNumber: (number) => `Question bank #${number}`,
+  questionImageAlt: (number) => `G1 question ${number} image`,
+  submit: "Submit answer",
+  answeredCorrect: "✓ Correct",
+  answeredWrong: "✗ Wrong",
+  next: "Next",
+  results: "See score",
+};
 
 function shuffled<T>(arr: T[]): T[] {
   const a = arr.slice();
@@ -14,18 +104,29 @@ function shuffled<T>(arr: T[]): T[] {
   return a;
 }
 
-export function QuizClient({ questions }: { questions: Question[] }) {
+export function QuizClient({
+  questions,
+  englishQuestions,
+  initialLocale = "zh",
+}: {
+  questions: Question[];
+  englishQuestions?: Question[];
+  initialLocale?: Locale;
+}) {
+  const [locale, setLocale] = useState<Locale>(initialLocale);
+  const labels = locale === "en" ? EN_LABELS : DEFAULT_LABELS;
+  const activeQuestions = locale === "en" && englishQuestions ? englishQuestions : questions;
   const [mode, setMode] = useState<Mode>("sequential");
   // Session = the ordered list of question indexes we'll iterate.
   // Bumping `sessionKey` (re-mount) is the simplest way to fully reset.
   const [sessionKey, setSessionKey] = useState(0);
 
   const order = useMemo(() => {
-    const idx = questions.map((_, i) => i);
+    const idx = activeQuestions.map((_, i) => i);
     return mode === "shuffle" ? shuffled(idx) : idx;
     // sessionKey forces re-shuffle on reset
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questions, mode, sessionKey]);
+  }, [activeQuestions, mode, sessionKey]);
 
   const [current, setCurrent] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -34,9 +135,20 @@ export function QuizClient({ questions }: { questions: Question[] }) {
   const [wrongCount, setWrongCount] = useState(0);
   const [history, setHistory] = useState<{ qIdx: number; picked: number; ok: boolean }[]>([]);
 
+  useEffect(() => {
+    if (!englishQuestions) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("lang") === "en") {
+      setLocale("en");
+      reset(mode);
+    }
+    // Run once on mount to pick up /quiz?lang=en.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const total = order.length;
   const done = current >= total;
-  const q = !done ? questions[order[current]] : null;
+  const q = !done ? activeQuestions[order[current]] : null;
   const answered = correctCount + wrongCount;
 
   function submit() {
@@ -65,24 +177,47 @@ export function QuizClient({ questions }: { questions: Question[] }) {
     setSessionKey((k) => k + 1);
   }
 
+  function switchLocale(nextLocale: Locale) {
+    setLocale(nextLocale);
+    reset(mode);
+  }
+
+  const intro = (
+    <header className="max-w-5xl mx-auto px-6 pt-10 pb-8">
+      <span className="sticker text-sm bg-[var(--color-canary)]">
+        {labels.badge(questions.length, englishQuestions?.length)}
+      </span>
+      <h1 className="mt-5 font-[family-name:var(--font-display)] text-5xl md:text-6xl leading-[1.05]">
+        {labels.headingPrefix}
+        <span className="underline-wobble">{labels.headingMarked}</span>
+        <span className="text-[var(--color-coral)]">{labels.headingSuffix}</span>
+      </h1>
+      <p className="mt-4 text-base md:text-lg max-w-2xl leading-relaxed">
+        {labels.intro}
+      </p>
+    </header>
+  );
+
   if (done) {
     const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
     const wrongs = history.filter((h) => !h.ok);
     return (
-      <section className="max-w-5xl mx-auto px-6 pb-16">
-        <div
-          className="rounded-[28px] border-4 border-[var(--color-ink)] bg-[var(--color-mint)] p-8 md:p-12 text-center"
-          style={{ boxShadow: "10px 10px 0 var(--color-ink)" }}
-        >
+      <>
+        {intro}
+        <section className="max-w-5xl mx-auto px-6 pb-16">
+          <div
+            className="rounded-[28px] border-4 border-[var(--color-ink)] bg-[var(--color-mint)] p-8 md:p-12 text-center"
+            style={{ boxShadow: "10px 10px 0 var(--color-ink)" }}
+          >
           <p className="font-[family-name:var(--font-accent)] italic text-lg">
-            练习结束 — Quiz complete
+            {labels.complete}
           </p>
           <div className="mt-3 font-[family-name:var(--font-display)] text-7xl md:text-8xl leading-none">
             {correctCount}/{total}
           </div>
-          <p className="mt-3 text-2xl font-bold">正确率 {pct}%</p>
+          <p className="mt-3 text-2xl font-bold">{labels.accuracy} {pct}%</p>
           <p className="mt-2 text-sm opacity-70">
-            答对 {correctCount} · 答错 {wrongCount}
+            {labels.correct} {correctCount} · {labels.wrong} {wrongCount}
           </p>
           <div className="mt-7 flex flex-wrap gap-3 justify-center">
             <button
@@ -91,26 +226,26 @@ export function QuizClient({ questions }: { questions: Question[] }) {
               className="rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] px-6 py-3 font-bold border-2 border-[var(--color-ink)]"
               style={{ boxShadow: "5px 5px 0 var(--color-coral)" }}
             >
-              再来一次
+              {labels.retry}
             </button>
             <button
               type="button"
               onClick={() => reset(mode === "shuffle" ? "sequential" : "shuffle")}
               className="sticker bg-[var(--color-paper)]"
             >
-              切换为{mode === "shuffle" ? "顺序" : "随机"}模式
+              {labels.switchMode(mode)}
             </button>
           </div>
-        </div>
+          </div>
 
-        {wrongs.length > 0 && (
-          <div className="mt-10">
+          {wrongs.length > 0 && (
+            <div className="mt-10">
             <h2 className="font-[family-name:var(--font-display)] text-3xl">
-              错题回顾（{wrongs.length}）
+              {labels.wrongReview(wrongs.length)}
             </h2>
             <ul className="mt-5 space-y-4">
               {wrongs.map((w, i) => {
-                const qq = questions[w.qIdx];
+                const qq = activeQuestions[w.qIdx];
                 return (
                   <li
                     key={i}
@@ -119,38 +254,64 @@ export function QuizClient({ questions }: { questions: Question[] }) {
                   >
                     <p className="font-semibold leading-snug">{qq.q}</p>
                     <p className="mt-3 text-sm">
-                      <span className="font-bold text-[var(--color-coral-deep)]">你的答案：</span>
+                      <span className="font-bold text-[var(--color-coral-deep)]">{labels.yourAnswer}</span>
                       {qq.options[w.picked]}
                     </p>
                     <p className="mt-1 text-sm">
-                      <span className="font-bold text-[var(--color-lake-deep)]">正确答案：</span>
+                      <span className="font-bold text-[var(--color-lake-deep)]">{labels.correctAnswer}</span>
                       {qq.options[qq.correct]}
                     </p>
                   </li>
                 );
               })}
             </ul>
-          </div>
-        )}
-      </section>
+            </div>
+          )}
+        </section>
+        <footer className="max-w-5xl mx-auto px-6 py-12 text-sm opacity-60">
+          {labels.source}
+        </footer>
+      </>
     );
   }
 
   if (!q) return null;
 
   return (
-    <section className="max-w-5xl mx-auto px-6 pb-16">
+    <>
+      {intro}
+      <section className="max-w-5xl mx-auto px-6 pb-16">
       {/* Score + progress bar */}
       <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
         <div className="flex flex-wrap gap-2">
+          {englishQuestions && (
+            <>
+              <button
+                type="button"
+                onClick={() => switchLocale("zh")}
+                className={`sticker text-sm ${locale === "zh" ? "bg-[var(--color-canary)]" : "bg-[var(--color-paper)]"}`}
+                aria-pressed={locale === "zh"}
+              >
+                {labels.zhBank}
+              </button>
+              <button
+                type="button"
+                onClick={() => switchLocale("en")}
+                className={`sticker text-sm ${locale === "en" ? "bg-[var(--color-canary)]" : "bg-[var(--color-paper)]"}`}
+                aria-pressed={locale === "en"}
+              >
+                {labels.enBank}
+              </button>
+            </>
+          )}
           <span className="sticker text-sm bg-[var(--color-mint)]">
-            ✓ 答对 {correctCount}
+            ✓ {labels.correct} {correctCount}
           </span>
           <span className="sticker text-sm bg-[var(--color-coral)] text-[var(--color-paper)]">
-            ✗ 答错 {wrongCount}
+            ✗ {labels.wrong} {wrongCount}
           </span>
           <span className="sticker text-sm bg-[var(--color-paper)]">
-            进度 {answered}/{total}
+            {labels.progress(answered, total)}
           </span>
         </div>
         <div className="flex gap-2">
@@ -160,7 +321,7 @@ export function QuizClient({ questions }: { questions: Question[] }) {
             className={`sticker text-xs ${mode === "sequential" ? "bg-[var(--color-canary)]" : "bg-[var(--color-paper)]"}`}
             aria-pressed={mode === "sequential"}
           >
-            顺序
+            {labels.sequential}
           </button>
           <button
             type="button"
@@ -168,7 +329,7 @@ export function QuizClient({ questions }: { questions: Question[] }) {
             className={`sticker text-xs ${mode === "shuffle" ? "bg-[var(--color-canary)]" : "bg-[var(--color-paper)]"}`}
             aria-pressed={mode === "shuffle"}
           >
-            随机
+            {labels.shuffle}
           </button>
         </div>
       </div>
@@ -191,12 +352,21 @@ export function QuizClient({ questions }: { questions: Question[] }) {
             Q{current + 1}
           </span>
           <span className="text-xs opacity-60">
-            (题库编号 #{order[current] + 1})
+            ({labels.questionNumber(order[current] + 1)})
           </span>
         </div>
         <h2 className="mt-2 font-[family-name:var(--font-display)] text-2xl md:text-3xl leading-snug">
           {q.q}
         </h2>
+        {q.image && (
+          <div className="mt-5 inline-flex rounded-3xl border-2 border-[var(--color-ink)] bg-white p-4">
+            <img
+              src={q.image}
+              alt={labels.questionImageAlt(order[current] + 1)}
+              className="max-h-48 w-auto max-w-full object-contain"
+            />
+          </div>
+        )}
 
         <ul className="mt-6 space-y-3">
           {q.options.map((opt, i) => {
@@ -248,7 +418,7 @@ export function QuizClient({ questions }: { questions: Question[] }) {
               className="rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] px-7 py-3 font-bold text-base border-2 border-[var(--color-ink)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform enabled:hover:-translate-y-0.5"
               style={{ boxShadow: "5px 5px 0 var(--color-coral)" }}
             >
-              提交答案
+              {labels.submit}
             </button>
           ) : (
             <>
@@ -259,11 +429,11 @@ export function QuizClient({ questions }: { questions: Question[] }) {
                     : "bg-[var(--color-coral)] text-[var(--color-paper)]"
                 }`}
               >
-                {picked === q.correct ? "✓ 答对" : "✗ 答错"}
+                {picked === q.correct ? labels.answeredCorrect : labels.answeredWrong}
               </span>
               {picked !== q.correct && (
                 <span className="text-sm">
-                  正确答案：
+                  {labels.correctAnswer}
                   <strong>{String.fromCharCode(65 + q.correct)}. {q.options[q.correct]}</strong>
                 </span>
               )}
@@ -273,12 +443,16 @@ export function QuizClient({ questions }: { questions: Question[] }) {
                 className="ml-auto rounded-full bg-[var(--color-coral)] text-[var(--color-paper)] px-7 py-3 font-bold text-base border-2 border-[var(--color-ink)] transition-transform hover:-translate-y-0.5"
                 style={{ boxShadow: "5px 5px 0 var(--color-ink)" }}
               >
-                {current + 1 < total ? "下一题 →" : "查看成绩 →"}
+                {current + 1 < total ? `${labels.next} →` : `${labels.results} →`}
               </button>
             </>
           )}
         </div>
       </article>
-    </section>
+      </section>
+      <footer className="max-w-5xl mx-auto px-6 py-12 text-sm opacity-60">
+        {labels.source}
+      </footer>
+    </>
   );
 }

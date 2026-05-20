@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { QuizClient } from "./QuizClient";
 import { QUESTIONS } from "@/lib/g1-questions";
+import { QUESTIONS_EN } from "@/lib/g1-questions-en";
 
 export const metadata: Metadata = {
-  title: "G1 笔试模拟练习 · 105 题交通常识",
+  title: `G1 笔试模拟练习 · ${QUESTIONS.length} 中文题 / ${QUESTIONS_EN.length} English`,
   description:
-    "免费 G1 中文笔试模拟练习，105 道安省交通常识题，作答后即时反馈对错并统计成绩。无需注册，关闭浏览器记录自动清除。",
+    `免费 G1 笔试模拟练习，包含 ${QUESTIONS.length} 道中文题与 ${QUESTIONS_EN.length} 道英文题，作答后即时反馈对错并统计成绩。无需注册，关闭浏览器记录自动清除。`,
   alternates: { canonical: "/quiz" },
   robots: { index: true, follow: true },
 };
@@ -31,26 +32,11 @@ export default function QuizPage() {
         </Link>
       </nav>
 
-      <header className="max-w-5xl mx-auto px-6 pt-10 pb-8">
-        <span className="sticker text-sm bg-[var(--color-canary)]">
-          交通常识 · 105 题
-        </span>
-        <h1 className="mt-5 font-[family-name:var(--font-display)] text-5xl md:text-6xl leading-[1.05]">
-          G1 中文笔试
-          <span className="underline-wobble">模拟练习</span>
-          <span className="text-[var(--color-coral)]">。</span>
-        </h1>
-        <p className="mt-4 text-base md:text-lg max-w-2xl leading-relaxed">
-          作答即时告知对错并累计成绩。题目仅缓存在你当前浏览器标签中——
-          关闭或刷新后记录自动清除，无需注册、无需登录。
-        </p>
-      </header>
+      <QuizClient
+        questions={QUESTIONS}
+        englishQuestions={QUESTIONS_EN}
+      />
 
-      <QuizClient questions={QUESTIONS} />
-
-      <footer className="max-w-5xl mx-auto px-6 py-12 text-sm opacity-60">
-        题库来源：doc/G1.pdf · 交通常识部分。交通标志题需配合图片，本练习未包含。
-      </footer>
     </main>
   );
 }

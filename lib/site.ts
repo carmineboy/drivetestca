@@ -56,4 +56,8 @@ export const KEYWORDS_EN = [
 ];
 
 export const BUSINESS_NAME_ZH = "Niagara 驾考教练";
-export const BUSINESS_NAME_EN = "Niagara Drive Coach";
+export const BUSINESS_NAME_EN = "Niagara Driving Instructor";
+
+export const SOCIAL_LINKS = {
+  xiaohongshu: "https://www.xiaohongshu.com/user/profile/598210c36a6a6906302a532f",
+} as const;

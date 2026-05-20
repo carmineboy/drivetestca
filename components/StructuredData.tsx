@@ -1,4 +1,4 @@
-import { SITE_URL, SERVICE_AREAS, BUSINESS_NAME_ZH, BUSINESS_NAME_EN } from "@/lib/site";
+import { SITE_URL, SERVICE_AREAS, BUSINESS_NAME_ZH, BUSINESS_NAME_EN, SOCIAL_LINKS } from "@/lib/site";
 
 type Locale = "zh" | "en";
 
@@ -7,8 +7,8 @@ export function StructuredData({ locale }: { locale: Locale }) {
   const url = isZh ? SITE_URL : `${SITE_URL}/en`;
   const name = isZh ? BUSINESS_NAME_ZH : BUSINESS_NAME_EN;
   const description = isZh
-    ? "尼亚加拉 / 圣凯瑟琳地区中英文驾驶教练，12 年系统化教学，G2 / G 路考一次通过率 97%。"
-    : "Bilingual driving instructor in the Niagara region. 12 years teaching · 97% first-time G2 / G road-test pass rate.";
+    ? "尼亚加拉 / 圣凯瑟琳地区中英文驾驶教练，自 2020 年扎根本地系统化教学，G2 / G 路考一次通过率 97%。"
+    : "Bilingual driving instructor in the Niagara region. Teaching since 2020 · 97% first-time G2 / G road-test pass rate.";
 
   const data = {
     "@context": "https://schema.org",
@@ -43,7 +43,7 @@ export function StructuredData({ locale }: { locale: Locale }) {
       "Highway and merge training",
       "Parallel, reverse, and 3-point parking",
     ],
-    sameAs: [],
+    sameAs: [SOCIAL_LINKS.xiaohongshu],
   };
 
   return (
