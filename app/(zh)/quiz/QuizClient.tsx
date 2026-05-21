@@ -301,7 +301,10 @@ export function QuizClient({
           <span className="sticker text-sm bg-[var(--color-mint)]">
             ✓ {labels.correct} {correctCount}
           </span>
-          <span className="sticker text-sm bg-[var(--color-coral)] text-[var(--color-paper)]">
+          <span
+            className="sticker text-sm"
+            style={{ background: "var(--color-coral)", color: "var(--color-paper)" }}
+          >
             ✗ {labels.wrong} {wrongCount}
           </span>
           <span className="sticker text-sm bg-[var(--color-paper)]">
@@ -420,8 +423,13 @@ export function QuizClient({
                 className={`sticker text-base ${
                   picked === q.correct
                     ? "bg-[var(--color-mint)]"
-                    : "bg-[var(--color-coral)] text-[var(--color-paper)]"
+                    : ""
                 }`}
+                style={
+                  picked === q.correct
+                    ? undefined
+                    : { background: "var(--color-coral)", color: "var(--color-paper)" }
+                }
               >
                 {picked === q.correct ? labels.answeredCorrect : labels.answeredWrong}
               </span>
