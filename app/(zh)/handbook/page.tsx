@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import Link from "next/link";
 import { FloatingShape } from "@/components/FloatingShape";
+import { SiteHeader } from "@/components/SiteHeader";
 import { CHAPTERS, type Chapter } from "./handbook-data";
 
 const OFFICIAL_EN_URL = "https://www.ontario.ca/document/official-mto-drivers-handbook";
@@ -165,33 +165,7 @@ export default function HandbookPage() {
 
   return (
     <main className="relative overflow-hidden min-h-screen">
-      {/* Top nav */}
-      <nav className="relative z-20 max-w-6xl mx-auto px-6 pt-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <span
-            className="inline-flex items-center justify-center w-11 h-11 rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-coral)] text-[var(--color-paper)] font-[family-name:var(--font-display)] text-2xl"
-            style={{ boxShadow: "4px 4px 0 var(--color-ink)" }}
-          >
-            驾
-          </span>
-          <span className="font-[family-name:var(--font-display)] text-xl">
-            Niagara 驾考教练
-          </span>
-        </Link>
-        <div className="flex items-center gap-3">
-          <a
-            href={OFFICIAL_EN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sticker text-xs bg-[var(--color-canary)]"
-          >
-            英文官方版
-          </a>
-          <Link href="/" className="sticker text-xs">
-            返回首页
-          </Link>
-        </div>
-      </nav>
+      <SiteHeader locale="zh" />
 
       {/* Hero */}
       <section className="relative max-w-6xl mx-auto px-6 pt-8 pb-8 md:pt-14 md:pb-12">

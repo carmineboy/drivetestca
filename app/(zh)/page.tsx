@@ -4,6 +4,7 @@ import { HeroScene } from "@/components/HeroScene";
 import { FloatingShape } from "@/components/FloatingShape";
 import { StructuredData } from "@/components/StructuredData";
 import { XiaohongshuIcon } from "@/components/XiaohongshuIcon";
+import { SiteHeader } from "@/components/SiteHeader";
 import { SOCIAL_LINKS } from "@/lib/site";
 
 const STATS = [
@@ -83,7 +84,7 @@ export default function Home() {
   return (
     <main className="relative overflow-hidden">
       <StructuredData locale="zh" />
-      <Nav />
+      <SiteHeader locale="zh" />
       <Hero />
       <Stats />
       <About />
@@ -94,42 +95,6 @@ export default function Home() {
       <CTA />
       <Footer />
     </main>
-  );
-}
-
-function Nav() {
-  return (
-    <nav className="relative z-20 max-w-6xl mx-auto px-6 pt-6 flex items-center justify-between">
-      <Link href="/" className="flex items-center gap-3">
-        <span
-          className="inline-flex items-center justify-center w-11 h-11 rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-coral)] text-[var(--color-paper)] font-[family-name:var(--font-display)] text-2xl"
-          style={{ boxShadow: "4px 4px 0 var(--color-ink)" }}
-        >
-          驾
-        </span>
-        <span className="font-[family-name:var(--font-display)] text-xl">
-          Niagara 驾考教练
-        </span>
-      </Link>
-      <div className="hidden md:flex items-center gap-6 text-sm font-semibold">
-        <a href="#method" className="hover:text-[var(--color-coral-deep)]">教学法</a>
-        <a href="#voices" className="hover:text-[var(--color-coral-deep)]">学员评价</a>
-        <Link href="/guides" className="hover:text-[var(--color-coral-deep)]">路考图解</Link>
-        <Link href="/handbook" className="hover:text-[var(--color-coral-deep)]">驾驶手册</Link>
-        <Link href="/quiz" className="hover:text-[var(--color-coral-deep)]">G1 模拟</Link>
-        <a href="#book" className="hover:text-[var(--color-coral-deep)]">预约</a>
-        <Link
-          href="/en"
-          className="sticker text-xs"
-          aria-label="Switch to English"
-        >
-          EN
-        </Link>
-      </div>
-      <Link href="#book" className="md:hidden sticker text-sm">
-        预约
-      </Link>
-    </nav>
   );
 }
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { SiteHeader } from "@/components/SiteHeader";
 import { QuizClient } from "./QuizClient";
 import { QUESTIONS } from "@/lib/g1-questions";
 import { QUESTIONS_EN } from "@/lib/g1-questions-en";
@@ -15,22 +15,7 @@ export const metadata: Metadata = {
 export default function QuizPage() {
   return (
     <main className="relative overflow-hidden min-h-screen">
-      <nav className="relative z-20 max-w-5xl mx-auto px-6 pt-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <span
-            className="inline-flex items-center justify-center w-11 h-11 rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-coral)] text-[var(--color-paper)] font-[family-name:var(--font-display)] text-2xl"
-            style={{ boxShadow: "4px 4px 0 var(--color-ink)" }}
-          >
-            驾
-          </span>
-          <span className="font-[family-name:var(--font-display)] text-xl">
-            Niagara 驾考教练
-          </span>
-        </Link>
-        <Link href="/" className="sticker text-xs">
-          返回首页
-        </Link>
-      </nav>
+      <SiteHeader locale="zh" />
 
       <QuizClient
         questions={QUESTIONS}

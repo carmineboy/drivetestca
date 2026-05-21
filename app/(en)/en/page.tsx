@@ -4,6 +4,7 @@ import { HeroScene } from "@/components/HeroScene";
 import { FloatingShape } from "@/components/FloatingShape";
 import { StructuredData } from "@/components/StructuredData";
 import { XiaohongshuIcon } from "@/components/XiaohongshuIcon";
+import { SiteHeader } from "@/components/SiteHeader";
 import { SOCIAL_LINKS } from "@/lib/site";
 
 const STATS = [
@@ -83,7 +84,7 @@ export default function HomeEn() {
   return (
     <main className="relative overflow-hidden">
       <StructuredData locale="en" />
-      <Nav />
+      <SiteHeader locale="en" />
       <Hero />
       <Stats />
       <About />
@@ -94,36 +95,6 @@ export default function HomeEn() {
       <CTA />
       <Footer />
     </main>
-  );
-}
-
-function Nav() {
-  return (
-    <nav className="relative z-20 max-w-6xl mx-auto px-6 pt-6 flex items-center justify-between">
-      <Link href="/en" className="flex items-center gap-3">
-        <span
-          className="inline-flex items-center justify-center w-11 h-11 rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-coral)] text-[var(--color-paper)] font-[family-name:var(--font-display)] text-2xl"
-          style={{ boxShadow: "4px 4px 0 var(--color-ink)" }}
-        >
-          ND
-        </span>
-        <span className="font-[family-name:var(--font-display)] text-xl">
-          Niagara Driving Instructor
-        </span>
-      </Link>
-      <div className="hidden md:flex items-center gap-6 text-sm font-semibold">
-        <a href="#method" className="hover:text-[var(--color-coral-deep)]">Method</a>
-        <a href="#voices" className="hover:text-[var(--color-coral-deep)]">Students</a>
-        <Link href="/quiz?lang=en" className="hover:text-[var(--color-coral-deep)]">G1 Quiz</Link>
-        <a href="#book" className="hover:text-[var(--color-coral-deep)]">Book</a>
-        <Link href="/" className="sticker text-xs" aria-label="切换中文">
-          中
-        </Link>
-      </div>
-      <Link href="#book" className="md:hidden sticker text-sm">
-        Book
-      </Link>
-    </nav>
   );
 }
 
