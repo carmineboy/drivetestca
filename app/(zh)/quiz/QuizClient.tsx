@@ -11,7 +11,6 @@ type QuizLabels = {
   headingMarked: string;
   headingSuffix: string;
   intro: string;
-  source: string;
   zhBank: string;
   enBank: string;
   complete: string;
@@ -41,7 +40,6 @@ const DEFAULT_LABELS: QuizLabels = {
   headingMarked: "模拟练习",
   headingSuffix: "。",
   intro: "作答即时告知对错并累计成绩。题目仅缓存在你当前浏览器标签中——关闭或刷新后记录自动清除，无需注册、无需登录。",
-  source: "题库来源：CC Driving 公开 G1 模拟题页面抓取整理，仅供练习参考。",
   zhBank: "中文题库",
   enBank: "English",
   complete: "练习结束 — Quiz complete",
@@ -71,7 +69,6 @@ const EN_LABELS: QuizLabels = {
   headingMarked: "practice test",
   headingSuffix: ".",
   intro: "Get instant feedback as you answer. Your score only lives in this browser tab: refresh or close the page and the session clears automatically. No registration, no login.",
-  source: "Question bank imported from CC Driving's public G1 practice page. For study reference only.",
   zhBank: "Chinese",
   enBank: "English",
   complete: "Quiz complete",
@@ -268,9 +265,6 @@ export function QuizClient({
             </div>
           )}
         </section>
-        <footer className="max-w-5xl mx-auto px-6 py-12 text-sm opacity-60">
-          {labels.source}
-        </footer>
       </>
     );
   }
@@ -450,9 +444,6 @@ export function QuizClient({
         </div>
       </article>
       </section>
-      <footer className="max-w-5xl mx-auto px-6 py-12 text-sm opacity-60">
-        {labels.source}
-      </footer>
     </>
   );
 }

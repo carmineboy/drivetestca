@@ -66,6 +66,8 @@ const VOICES = [
   },
 ];
 
+const MORE_SUCCESS_CASES_URL = "https://www.xiaohongshu.com/user/profile/66cd427f000000001d022018";
+
 const TICKER = [
   "G2 一次通过",
   "G 一次通过",
@@ -438,9 +440,20 @@ function Testimonials() {
   return (
     <section id="voices" className="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
       <FloatingShape variant="star" size={70} rotate={-12} className="top-12 right-8 hidden md:block" />
-      <p className="font-[family-name:var(--font-accent)] italic text-[var(--color-lake-deep)] text-lg">
-        学员的话 · In their words
-      </p>
+      <div className="flex flex-wrap items-center gap-4">
+        <p className="font-[family-name:var(--font-accent)] italic text-[var(--color-lake-deep)] text-lg">
+          学员的话 · In their words
+        </p>
+        <a
+          href={MORE_SUCCESS_CASES_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-[var(--color-ink)] bg-[var(--color-canary)] px-4 py-2 text-xs font-black tracking-wider text-[var(--color-ink)] shadow-[3px_3px_0_var(--color-ink)] transition-transform hover:-translate-y-0.5"
+        >
+          <XiaohongshuIcon size={18} />
+          更多成功案例
+        </a>
+      </div>
       <h2 className="mt-2 font-[family-name:var(--font-display)] text-5xl md:text-6xl leading-tight max-w-2xl">
         每一张<span className="text-[var(--color-coral)]">驾照</span>背后，<br />
         都是一段稳稳走过的路。

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "../globals.css";
 import { SITE_URL, KEYWORDS_ZH, KEYWORDS_EN, BUSINESS_NAME_ZH } from "@/lib/site";
 
@@ -82,7 +83,10 @@ export default function ZhRootLayout({
           href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700;900&family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
