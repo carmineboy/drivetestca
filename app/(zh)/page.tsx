@@ -633,7 +633,7 @@ function Footer() {
       </div>
       <div className="max-w-6xl mx-auto px-6 mt-10 pt-6 border-t border-[var(--color-paper)]/15 text-xs opacity-60 flex flex-wrap justify-between gap-2">
         <span>© {new Date().getFullYear()} Niagara Driving Instructor. All rights reserved.</span>
-        <span>占位内容 · Replace with real content before launch.</span>
+        <span>本网站学习资料仅供备考参考，实际考试以 DriveTest / MTO 要求为准。</span>
       </div>
     </footer>
   );

@@ -633,7 +633,7 @@ function Footer() {
       </div>
       <div className="max-w-6xl mx-auto px-6 mt-10 pt-6 border-t border-[var(--color-paper)]/15 text-xs opacity-60 flex flex-wrap justify-between gap-2">
         <span>© {new Date().getFullYear()} Niagara Driving Instructor. All rights reserved.</span>
-        <span>Placeholder content — replace before launch.</span>
+        <span>Study materials on this site are for test prep reference only. Actual tests follow DriveTest / MTO requirements.</span>
       </div>
     </footer>
   );
