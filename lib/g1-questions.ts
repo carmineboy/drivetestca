@@ -10,7 +10,7 @@ export const QUESTIONS: Question[] = [
     "q": "请选择正确的交通标志含义：",
     "image": "/g1-images/image001.jpg",
     "options": [
-      "靠安全岛右侧行驶",
+      "右侧车道结束",
       "弯曲路在前",
       "单行道在前",
       "急弯路在前"
