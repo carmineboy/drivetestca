@@ -265,6 +265,11 @@ function About() {
               demands.
             </p>
             <p>
+              The training car is equipped with an instructor-side brake and a roof-mounted driving-school
+              sign, so other drivers can recognise the test/training situation more easily. It also gives
+              examiners an extra layer of safety and confidence during the road test.
+            </p>
+            <p>
               Beyond just passing: North American road etiquette, right-of-way logic, commuting and
               long-distance driving experience — so you walk out of the test centre ready to drive
               independently, not just legally.
@@ -272,7 +277,7 @@ function About() {
           </div>
           <div className="mt-8 space-y-3">
             <div className="flex flex-wrap gap-2">
-              {["MTO certified", "EN / 中文", "G1 written prep", "Driving-school partner", "Commercial insured", "AWD training car", "Brand-new condition"].map((t) => (
+              {["MTO certified", "EN / 中文", "G1 written prep", "Driving-school partner", "Commercial insured", "Instructor-side brake", "Roof driving-school sign", "Brand-new condition"].map((t) => (
                 <span key={t} className="sticker text-sm bg-[var(--color-paper-warm)]">
                   {t}
                 </span>
