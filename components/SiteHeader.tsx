@@ -37,6 +37,9 @@ export function SiteHeader({ locale = "zh" }: SiteHeaderProps) {
         <Link href="/handbook" className="hover:text-[var(--color-coral-deep)]">
           {isEn ? "Handbook" : "驾驶手册"}
         </Link>
+        <Link href="/commands" className="hover:text-[var(--color-coral-deep)]">
+          {isEn ? "Test Commands" : "考官指令"}
+        </Link>
         <Link href={quizHref} className="hover:text-[var(--color-coral-deep)]">
           {isEn ? "G1 Quiz" : "G1 模拟"}
         </Link>
