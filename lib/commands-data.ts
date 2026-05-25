@@ -118,7 +118,7 @@ export const COMMAND_GROUPS: CommandGroup[] = [
       { english: "Light traffic", chinese: "交通顺畅", note: "路况良好" },
       { english: "Construction zone", chinese: "施工区域", note: "通常会有临时的低限速，必须严格遵守" },
       { english: "School zone", chinese: "学校区域", note: "上下学时间有非常严格的限速（通常是 30 km/h 或 40 km/h）" },
-      { english: "Residential area", chinese: "住宅区", note: "一般默认限速为 50 km/h（除非有路标指明）" },
+      { english: "Residential area", chinese: "住宅区", note: "一般默认限速为 40 km/h（除非有路标指明）" },
       { english: "Road is clear", chinese: "道路畅通", note: "路面无障碍" },
       { english: "Obstruction ahead", chinese: "前方有障碍", note: "注意提前避让或减速" },
       { english: "Emergency vehicle approaching", chinese: "紧急车辆接近", note: "听到警报声或看到红蓝警灯应立即安全靠右停下礼让" },
