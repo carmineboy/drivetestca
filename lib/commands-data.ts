@@ -43,7 +43,7 @@ export const COMMAND_GROUPS: CommandGroup[] = [
     color: "var(--color-canary)",
     intro: "行车过程中最核心的变道与转向指令，合并高速路也是其中重点。",
     items: [
-      { english: "Turn left", chinese: "左转", note: "绿灯左转注意礼让直行车，红灯时必须在停止线前停稳" },
+      { english: "Turn left", chinese: "左转", note: "红灯时必须在停止线前停稳；绿灯无保护左转时，必须礼让行人、对向直行车及对向无让牌的右转车" },
       { english: "Turn right", chinese: "右转", note: "右转前需观察右侧自行车道与行人" },
       { english: "Change lanes", chinese: "变道", note: "在普通道路变道" },
       { english: "Change lanes to the left", chinese: "向左变道", note: "打左转向灯、看后视镜、回头看盲点、安全后变道" },
